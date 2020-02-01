@@ -1,0 +1,47 @@
+# Primary dataset
+## American Housing Survey (AHS) 2011 - 7 files
+Our primary datasets are a collection of housing data in the U.S and these data are updated 2 years ago. There are 7 files from the collection we are particularly interested in.
+These datasets are organized by control number, which is used to enable longitudinal matches among all files. 
+
+1. **Household-level Information:** house value, rent, poverty
+2. **Mortgage Information:** types of mortgage(s), payment plan for mortgage(s), interest rate and outstanding principal.
+3. **Person-level Information:** personal income, disability status, race, sex and marriage status
+4. **Recent Mover Information:** information about the previous and the recent residence
+5. **Rental Property Owners:** Does either the owner or a resident manager live in this building/complex?
+6. **Verification of Income-to-cost Ratio:** for extremely low income-to-ratio cases, record, if household receive helps financially for grocery bills, transportation, etc
+7. **Upgrade and Remodeling:** space added to apartment, cost of alteration/repair, year alteration/repair was completed and the number of windows repaired or replaced
+[link](https://public.enigma.com/browse/collection/american-housing-survey-ahs-2011/b9e1aed1-82f5-458c-9df7-f1ca4ed9ab3e)
+
+**We hope to gain insights into these areas:**
+
+1. Which area has the highest housing value? Which area has the residents with the highest income? Any relationships between them?
+2. Which area needs the government’s attention? Poverty level? Maybe the crime rate?
+3. Do any neighborhoods that are close to each other but differ in income/house value/education level a lot?
+4. Which area attracts more people to rent than to buy?
+5. Which area/neighborhood has better health services?Connecting that, which area/neighborhood is currently more demanding?
+
+
+# Secondary datasets
+## Institute of Museum and Library Services - Museum Universe - 1 file
+It includes basic information on aquariums, arboretums, botanical gardens, art museums, children's museums, general museums, historic houses and sites, history museums, nature centers, natural history and anthropology museums, planetariums, science and technology centers, specialized museums, and zoos
+[link](https://public.enigma.com/datasets/institute-of-museum-and-library-services-museum-universe/d728707c-9c42-44fd-9bb3-0e9fc356f76d)
+
+**We hope to gain insights into these areas:**
+
+1. Any co-relation between where theses public resources located vs living condition of the neighborhood nearby?
+2. How much revenue they generated? How much tax they paid?
+
+## US Government Spending (2006-Present) - 5 files
+*We'll only use ones from 2010-2015*
+This includes US government spending on individuals who have been assessed as needing services, or social service provisions, generally for the large entitlement programs such as Social Security, Unemployment Insurance, Housing Choice Vouchers, and Federal Pell Grants.
+Locations are labelled by 5 digit + 4 digit extension zipcode
+[link](https://public.enigma.com/browse/collection/u-s-government-spending-direct-payments/63afcb57-30bd-4c6d-9fc2-043c0025c6f6)
+
+**We hope to gain insights into these areas:**
+
+1. Which areas recieved the most funding/subsidies from the government?
+2. What type of funding (education, food, housing) is the most prominent in the neighborhood?
+
+## National Health Interview Survey - Households (2010-2012) - 3 files
+*?Do we need this? looks like this info is skewed. Samples are selected based on their pass health condition and age?*
+This section provides very basic information regarding each household that was interviewed in the NHIS survey including the household's region, type of living quarters, date interviewed, and how many respondents were available.
