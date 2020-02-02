@@ -1,16 +1,65 @@
 # Primary dataset
 ## American Housing Survey (AHS) 2011 - 7 files
-Our primary datasets are a collection of housing data in the U.S and these data are updated 2 years ago. There are 7 files from the collection we are particularly interested in.
-These datasets are organized by control number, which is used to enable longitudinal matches among all files. 
-
-1. **Household-level Information:** house value, rent, poverty
-2. **Mortgage Information:** types of mortgage(s), payment plan for mortgage(s), interest rate and outstanding principal.
-3. **Person-level Information:** personal income, disability status, race, sex and marriage status
-4. **Recent Mover Information:** information about the previous and the recent residence
-5. **Rental Property Owners:** Does either the owner or a resident manager live in this building/complex?
-6. **Verification of Income-to-cost Ratio:** for extremely low income-to-ratio cases, record, if household receive helps financially for grocery bills, transportation, etc
-7. **Upgrade and Remodeling:** space added to apartment, cost of alteration/repair, year alteration/repair was completed and the number of windows repaired or replaced
 [link](https://public.enigma.com/browse/collection/american-housing-survey-ahs-2011/b9e1aed1-82f5-458c-9df7-f1ca4ed9ab3e)
+Our primary datasets are a collection of housing data in the U.S and these data are updated 2 years ago. There are 7 files from the collection we are particularly interested in.
+These datasets are organized by control number, which is used to enable longitudinal matches among all files. The datasets might be filtered to remove unrelatable fields.
+
+1. Household-level Information: house value, rent, poverty
+Sample data (This data contains a total of  911 fields but the sample data only contains 25 fields):
+Control number,Average heating/cooling degree days,Central city / suburban status,Census region,1980 design PMSA code,Average median income (average),Average median income (minimum),Average median income (maximum),Fair market rent (average),Fair market rent (minimum),Fair market rent (maximum),Extremely low income limit (average),Very low income limit (average),Low income limit (average),Extremely low income limit (minimum),Very low income limit (minimum),Low income limit (minimum),Extremely low income limit (maximum),Very low income limit (maximum),Low income limit (maximum),Poverty level income,Controlm,Status of unit,1980 design CMSA code,County
+36000001146,4,2,4,360,84200,84200,84200,2580,2580,2580,24950,41550,66500,24950,41550,66500,24950,41550,66500,17849,-9,1,49,59
+36000001147,4,2,4,360,84200,84200,84200,2241,2241,2241,27700,46150,73850,27700,46150,73850,27700,46150,73850,22629,-9,1,49,59
+36000001148,4,2,4,360,84200,84200,84200,1327,1327,1327,19400,32350,51700,19400,32350,51700,19400,32350,51700,-9,-9,1,49,59
+36000001149,4,2,4,360,84200,84200,84200,2577,2577,2577,24950,41550,66500,24950,41550,66500,24950,41550,66500,17399,-9,1,49,59
+
+2. Mortgage Information: types of mortgage(s), payment plan for mortgage(s), interest rate and outstanding principal
+Sample data (This data contains a total of 349 fields but the sample data only contains 14 fields):
+Control number,Percentage of 1st/2nd/3rd mortgage used for additions/improvements,1st/2nd/3rd mortgage reference rate where mortgage payment not fixed,1st/2nd/3rd mortgage period of time interest rate fixed where mortgage payment not fixed,1st/2nd/3rd mortgage payment changed because interest rate changed,1st/2nd/3rd mortgage frequency of interest rate change where mortgage payment not fixed,Years needed to pay off 1st/2nd/3rd mortgage,Amount of other charges included in 1st/2nd/3rd mortgage,1st/2nd/3rd mortgage changes due to interest rate,1st/2nd/3rd mortgage final balance due,1st/2nd/3rd mortgage borrowed from bank,1st/2nd/3rd mortgage’s last payment biggest,Term of 1st/2nd/3rd mortgage can vary,Amount of cash received from 1st/2nd/3rd mortgage
+'036000001146',-6,'-6','-6','-6','-6',-6,-6,'-6',-6,'2','-6','2',-6
+'036000001147',5,'-6','-6','1','-6',-6,-6,'-6',-6,'1','-6','2',20000
+'036000001149',-6,'-9','-9','-6','-9',-6,-6,'-9',-6,'-9','-9','2',-6
+'036000001150',-6,'1','4','-6','5',-6,-6,'1',-6,'1','2','2',-6
+
+3. Person-level Information: personal income, disability status, race, sex and marriage status
+Sample data (This data contains 97 fields but the sample data only contains 19 fields):
+Control number,Line number of person,Person,Other income received by nonrelative,Salary received by nonrelative,Received self-employment income by nonrelative,Person has alimony or child support income,Person has dividends,Person has interest income,Person has unempl/workers comp/VA/other pay,Person has rental income,Received retirement or survivor pension,Wages/salary received by reference person/relative,Received self-employment income,Received Social Security or Railroad Retirement pension,Received Supplemental Security Income,"Received AFDC, TANF or other public assistance or welfare program payments","Received SSDI, work. comp., vet. or other disability payments",Frequency of lodger's rent payment to household
+36000001146,1,1,-6,-6,-6,2,2,1,2,2,2,1,2,2,2,2,2,-6
+36000001146,2,2,-6,-6,-6,2,2,2,2,2,2,1,2,2,2,2,2,-6
+36000001146,3,3,-6,-6,-6,-6,-6,-6,-6,-6,-6,-6,-6,-6,-6,-6,-6,-6
+36000001147,1,1,-6,-6,-6,2,2,2,2,2,2,1,2,2,2,2,1,-6
+
+4. Recent Mover Information: information about the previous and the recent residence
+Sample data (17 fields):
+Control number,Previous Residence Outside United States,# People Living in Last Unit Before Move,Previous Residence Was Condo/Co-op,Previous Residence Was a Cooperative,Current Housing Costs Same as Old Unit,Previous Unit Owned/Rented by One Who Moved Here,Previous Unit Owner/Rented by Relative,Tenure of Previous Residence,Type of Unit of Previous Residence,Recent Mover Group (MVG),Edit Flag for MVG (2011 and after) and for MOVGRP (1997-2009),Edit Flag for XTEN,Edit Flag for XUNIT,Edit Flag for XPER,Edit Flag for XHEAD,Serialid
+'036000001152','2',1,'3','-6','3','1','-6','2','2','1','-9','-9','-9','-9','1',1
+'036000001163','2',1,'3','-6','1','1','-6','2','2','1','-9','-9','-9','-9','1',2
+'036000001173','2',5,'2','-6','1','1','-6','1','2','1','-9','-9','-9','-9','-9',3
+'036000001176','2',4,'3','-6','1','1','-6','1','1','1','-9','-9','-9','-9','-9',4
+
+5. Rental Property Owners: Does either the owner or a resident manager live in this building/complex?
+Sample data (4 fields):
+Control number,Owner/resident manager lives on-site,Edit flag for OWNHERE,Serialid
+'036000001152','1','-9',1
+'036000001159','2','-9',2
+'036000001163','1','-9',3
+'036000001165','-6','-9',4
+
+6. Verification of Income-to-cost Ratio: for extremely low income-to-ratio cases, record, if household receive helps financially for grocery bills, transportation, etc
+Sample data (10 fields):
+Control number,Received other assistance making ends meet,Receive help with grocery bills,Receive help with clothing expenses,Receive help w/ transportation expenses,Receive help with child care payments,Receive help with medical bills,Receive help with utility bills,Receive help with rent payments,Serialid
+'036000001205','2','1','1','1','2','1','1','1',1
+'036000001252','2','2','2','2','2','2','2','1',2
+'036000001263','2','2','2','2','2','2','2','2',3
+'036000001323','2','2','1','2','2','2','2','2',4
+
+7. Upgrade and Remodeling: space added to apartment, cost of alteration/repair, year alteration/repair was completed and the number of windows repaired or replaced
+Sample data (8 fields):
+Control number,Type of alteration/repair - 1999 version,Household member performed alteration/repair,Cost of alteration/repair,Edit flag for RAS,Hurricane Katrina related alteration/repair,Edit flag for RAD,Serialid
+'036000001147','47','1',250,'-9','2','-9',1
+'036000001147','62','2',500,'-9','2','-9',2
+'036000001147','63','1',70,'-9','2','-9',3
+'036000001150','52','2',1600,'-9','2','-9',4
+
 
 **We hope to gain insights into these areas:**
 
@@ -23,29 +72,39 @@ These datasets are organized by control number, which is used to enable longitud
 
 # Secondary datasets
 ## Institute of Museum and Library Services - Museum Universe - 1 file
-It includes basic information on aquariums, arboretums, botanical gardens, art museums, children's museums, general museums, historic houses and sites, history museums, nature centers, natural history and anthropology museums, planetariums, science and technology centers, specialized museums, and zoos
 [link](https://public.enigma.com/datasets/institute-of-museum-and-library-services-museum-universe/d728707c-9c42-44fd-9bb3-0e9fc356f76d)
+It includes basic information on aquariums, arboretums, botanical gardens, art museums, children's museums, general museums, historic houses and sites, history museums, nature centers, natural history and anthropology museums, planetariums, science and technology centers, specialized museums, and zoos
+
 
 **We hope to gain insights into these areas:**
 
 1. Any co-relation between where theses public resources located vs living condition of the neighborhood nearby?
 2. How much revenue they generated? How much tax they paid?
 
+
+
 ## US Government Spending (2006-Present) - 5 files
+[link](https://public.enigma.com/browse/collection/u-s-government-spending-direct-payments/63afcb57-30bd-4c6d-9fc2-043c0025c6f6)
 *We'll only use ones from 2010-2015*
 This includes US government spending on individuals who have been assessed as needing services, or social service provisions, generally for the large entitlement programs such as Social Security, Unemployment Insurance, Housing Choice Vouchers, and Federal Pell Grants.
 Locations are labelled by 5 digit + 4 digit extension zipcode
-[link](https://public.enigma.com/browse/collection/u-s-government-spending-direct-payments/63afcb57-30bd-4c6d-9fc2-043c0025c6f6)
+
 
 **We hope to gain insights into these areas:**
 
 1. Which areas recieved the most funding/subsidies from the government?
 2. What type of funding (education, food, housing) is the most prominent in the neighborhood?
 
+
+
 ## National Health Interview Survey - Households (2010-2012) - 3 files
+[link](https://public.enigma.com/browse/national-health-interview-survey-households/34a0366c-67b9-46b7-beaf-97da9790c187)
 *?Do we need this? looks like this info is skewed. Samples are selected based on their pass health condition and age?*
 This section provides very basic information regarding each household that was interviewed in the NHIS survey including the household's region, type of living quarters, date interviewed, and how many respondents were available.
 
+
+
+
 ## Centers for Medicare & Medicaid Services - 5 collections with several files
-This datasets include information about Medicare health plans, Medicare financial management, Medicare fee for service operations, Medicaid and children's health, survey & certification and quality improvement. This information might be connected to the the information of the households to explore the medicare and medicaid services in the area/neighborhood which can affect the demanding of the households location.
 [link](https://public.enigma.com/browse/collection/centers-for-medicare-medicaid-services/e03f7200-9e70-416c-83ab-bdd76193dc8c)
+This datasets include information about Medicare health plans, Medicare financial management, Medicare fee for service operations, Medicaid and children's health, survey & certification and quality improvement. This information might be connected to the the information of the households to explore the medicare and medicaid services in the area/neighborhood which can affect the demanding of the households location.
