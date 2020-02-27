@@ -1,0 +1,6 @@
+python3 -m apache_beam.examples.wordcount \
+--project sashimi-266523 \
+--runner DataflowRunner \
+--staging_location gs://sashimi-sushi/staging \
+--temp_location gs://sashimi-sushi/temp \
+--output gs://sashimi-sushi/output
