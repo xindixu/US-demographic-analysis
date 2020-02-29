@@ -17,6 +17,16 @@ column_name = [
     'DP03_0061PE', 		  # Income_200K_more: STRING
 ]
 
+new_label = ['Income_less_10K',
+             'Income_10K_14K',
+             'Income_15K_24K',
+             'Income_25K_34K',
+             'Income_35K_49K',
+             'Income_50K_74K',
+             'Income_75K_99K',
+             'Income_150K_199K',
+             'Income_200K_more',
+            ]
 
 class FormatIncomeFn(beam.DoFn):
     def process(self, element):
@@ -39,7 +49,6 @@ class ClassifyIncomeFn(beam.DoFn):
         for i in sorted(income_obj.keys()):
             if i != 'NAME':
                 income.append(income_obj[i])
-        print(income)
 
         # compute percentage of population in a certain social-eco class
         # cutoff comes from U.S.News
@@ -75,9 +84,10 @@ class ClassifyIncomeFn(beam.DoFn):
             income_obj['Average'] += income[i] * score[i]
         income_obj['Average'] /= 250
 
+
         # create key, value pairs
         income_tuple = (name, income_obj)
-        return [income_tuple]
+        return [income_obj]
 
 
 def run():
@@ -105,7 +115,7 @@ def run():
         FormatIncomeFn())
 
     formated_pcoll | 'Record formated data' >> WriteToText(
-        'output.txt')
+        'formated_pcoll_output.txt')
 
     # apply ParDo to classify income and social-econ status
     classified_pcoll = formated_pcoll | 'Classify income and social-econ status' >> beam.ParDo(
@@ -113,28 +123,28 @@ def run():
 
     # write PCollection to log file
     classified_pcoll | 'Record processed data' >> WriteToText(
-        'output.txt')
+        'classified_pcoll_output.txt')
 
     dataset_id = 'acs_2018_modeled'
     table_id = 'Income_Beam'
-    schema_id = "NAME: STRING, \
-     DP03_0052PE: FLOAT,    \
-     DP03_0053PE: FLOAT, \
-     DP03_0054PE: FLOAT, \
-     DP03_0055PE: FLOAT, \
-     DP03_0056PE: FLOAT, \
-     DP03_0057PE: FLOAT, \
-     DP03_0058PE: FLOAT, \
-     DP03_0059PE: FLOAT,   \
-     DP03_0060PE: FLOAT,   \
-     DP03_0061PE: FLOAT,   \
+    schema_id = "NAME:STRING, \
+     DP03_0052PE:FLOAT,    \
+     DP03_0053PE:FLOAT, \
+     DP03_0054PE:FLOAT, \
+     DP03_0055PE:FLOAT, \
+     DP03_0056PE:FLOAT, \
+     DP03_0057PE:FLOAT, \
+     DP03_0058PE:FLOAT, \
+     DP03_0059PE:FLOAT,   \
+     DP03_0060PE:FLOAT,   \
+     DP03_0061PE:FLOAT,   \
      Lowest:FLOAT,  \
      Lower_Middle:FLOAT,    \
      Middle:FLOAT,  \
      Upper_Middle:FLOAT,    \
      Rich:FLOAT,    \
-     Predominant_Class: STRING, \
-     Average: FLOAT"    \
+     Predominant_Class:STRING, \
+     Average:FLOAT"    \
 
     # write PCollection to new BQ table
     classified_pcoll | 'Write BQ table' >> beam.io.WriteToBigQuery(dataset=dataset_id,
