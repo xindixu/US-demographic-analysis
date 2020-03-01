@@ -1,1 +1,7 @@
-There is no standardization and normalization problem in the primary data.
+Our data is clean and we have the professor checked on everything.
+Dr. Cohen wants us to transform the name of column from codename to description name for some table.
+
+1. We have transformed the columns' name of the Housing_Value table.
+
+
+2. We have transformed and created some columns to classify the income into groups in the Income table. 
