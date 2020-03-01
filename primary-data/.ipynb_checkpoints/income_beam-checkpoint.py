@@ -108,7 +108,7 @@ def run():
 
     # write raw PCollection to log file
     query_results | 'Record oringal data' >> WriteToText(
-        'input.txt')
+        'income_input.txt')
 
     # apply ParDo to formate null values to 0
     formated_pcoll = query_results | 'Format income' >> beam.ParDo(
