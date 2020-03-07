@@ -34,23 +34,6 @@ new_label = [
     'Public_Administration'
 ]
 
-schema_id = 'NAME:STRING,\
-Agriculture:STRING, \
-Construction:STRING, \
-Manufacturing:STRING, \
-Wholesale:STRING, \
-Retail:STRING, \
-Transportation:STRING, \
-Information:STRING, \
-Finance_Real_Estate:STRING, \
-Professional_Scientific_Management:STRING, \
-Educational_Health_Care:STRING, \
-Art_Entertainment:STRING, \
-Public_Administration:STRING, \
-Predominant_Industry_First:STRING, \
-Predominant_Industry_Second:STRING, \
-Predominant_Industry_Third:STRING'
-
 
 class FormatIndustry(beam.DoFn):
     def process(self, element):
@@ -118,6 +101,22 @@ def run():
 
     dataset_id = 'acs_2018_modeled'
     table_id = 'Labor_In_Industry_Beam'
+    schema_id = 'NAME:STRING,\
+Agriculture:STRING, \
+Construction:STRING, \
+Manufacturing:STRING, \
+Wholesale:STRING, \
+Retail:STRING, \
+Transportation:STRING, \
+Information:STRING, \
+Finance_Real_Estate:STRING, \
+Professional_Scientific_Management:STRING, \
+Educational_Health_Care:STRING, \
+Art_Entertainment:STRING, \
+Public_Administration:STRING, \
+Predominant_Industry_First:STRING, \
+Predominant_Industry_Second:STRING, \
+Predominant_Industry_Third:STRING'
 
     # write PCollection to new BQ table
 
