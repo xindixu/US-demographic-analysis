@@ -77,19 +77,16 @@ def run():
      query_results = p | 'Read from BigQuery' >> beam.io.Read(bq_source)
      
      # write raw PCollection to log file
-     query_results | 'Record original data' >> WriteToText('input_hv.txt')
+     query_results | 'Record original data' >> WriteToText('input.txt')
 
      # apply ParDo to format the column of the data
      formatted_pcoll = query_results | 'Format column' >> beam.ParDo(FormatHousingval_ColumnFn())
-    
-     # write PCollection to log file
-     formatted_pcoll | 'Record the formatted data' >> WriteToText('output_hv.txt')
     
      # apply Pardo to classify the data
      classified_pcoll = formatted_pcoll | 'Classify the data' >> beam.ParDo(ClassifyHousingvalFn())
 
      # write PCollection to log file
-     classified_pcoll | 'Record the classified data' >> WriteToText('output1_hv.txt')
+     classified_pcoll | 'Record the classified data' >> WriteToText('output.txt')
 
         
      dataset_id = 'acs_2018_modeled'
