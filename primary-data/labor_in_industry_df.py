@@ -1,42 +1,47 @@
+import datetime
 import logging
 import apache_beam as beam
-from apache_beam.io import ReadFromText
 from apache_beam.io import WriteToText
-
-
-original_label = [
-    'DP03_0033E',
-    'DP03_0034E',
-    'DP03_0035E',
-    'DP03_0036E',
-    'DP03_0037E',
-    'DP03_0038E',
-    'DP03_0039E',
-    'DP03_0040E',
-    'DP03_0041E',
-    'DP03_0042E',
-    'DP03_0043E',
-    'DP03_0045E'
-]
-
-new_label = [
-    'Agriculture',
-    'Construction',
-    'Manufacturing',
-    'Wholesale',
-    'Retail',
-    'Transportation',
-    'Information',
-    'Finance_Real_Estate',
-    'Professional_Scientific_Management',
-    'Educational_Health_Care',
-    'Art_Entertainment',
-    'Public_Administration'
-]
+from apache_beam.pipeline import PipelineOptions
+from apache_beam.pipeline import Pipeline
+from apache_beam.options.pipeline_options import GoogleCloudOptions
+from apache_beam.options.pipeline_options import StandardOptions
 
 
 class FormatIndustry(beam.DoFn):
     def process(self, element):
+        original_label = [
+            'DP03_0033E',
+            'DP03_0034E',
+            'DP03_0035E',
+            'DP03_0036E',
+            'DP03_0037E',
+            'DP03_0038E',
+            'DP03_0039E',
+            'DP03_0040E',
+            'DP03_0041E',
+            'DP03_0042E',
+            'DP03_0043E',
+            'DP03_0045E'
+        ]
+
+        new_label = [
+            'Agriculture',
+            'Construction',
+            'Manufacturing',
+            'Wholesale',
+            'Retail',
+            'Transportation',
+            'Information',
+            'Finance_Real_Estate',
+            'Professional_Scientific_Management',
+            'Educational_Health_Care',
+            'Art_Entertainment',
+            'Public_Administration'
+        ]
+
+
+
         name = element.get('NAME')
         for i in original_label:
             value = element.get(i)
@@ -53,6 +58,23 @@ class FormatIndustry(beam.DoFn):
 class FindPredominantIndustry(beam.DoFn):
     def process(self, element):
 
+        new_label = [
+            'Agriculture',
+            'Construction',
+            'Manufacturing',
+            'Wholesale',
+            'Retail',
+            'Transportation',
+            'Information',
+            'Finance_Real_Estate',
+            'Professional_Scientific_Management',
+            'Educational_Health_Care',
+            'Art_Entertainment',
+            'Public_Administration'
+        ]
+
+
+            
         new_dic = dict()
         for i in range(len(new_label)):
             new_dic[new_label[i]] = element.get(new_label[i])
@@ -67,15 +89,25 @@ class FindPredominantIndustry(beam.DoFn):
 
 
 def run():
-    PROJECT_ID = 'sashimi-266523'
+    PROJECT_ID = 'sashimi-266523'  # change to your project id
+    BUCKET = 'gs://sashimi-sushi'  # change to your bucket name
+    DIR_PATH = BUCKET + '/output/' + \
+        datetime.datetime.now().strftime('%Y_%m_%d_%H_%M_%S') + '/'
 
-    options = {
-        'project': PROJECT_ID
-    }
-    opts = beam.pipeline.PipelineOptions(flags=[], **options)
+    # Create and set your PipelineOptions.
+    options = PipelineOptions(flags=None)
 
-    # Create beam pipeline using local runner
-    p = beam.Pipeline('DirectRunner', options=opts)
+    # For Dataflow execution, set the project, job_name,
+    # staging location, temp_location and specify DataflowRunner.
+    google_cloud_options = options.view_as(GoogleCloudOptions)
+    google_cloud_options.project = PROJECT_ID
+    google_cloud_options.job_name = 'labor-in-industry-df'
+    google_cloud_options.staging_location = BUCKET + '/staging'
+    google_cloud_options.temp_location = BUCKET + '/temp'
+    options.view_as(StandardOptions).runner = 'DataflowRunner'
+
+    # Create the Pipeline with the specified options.
+    p = Pipeline(options=options)
 
     sql = 'SELECT NAME, DP03_0033E, DP03_0034E, DP03_0035E, DP03_0036E, DP03_0037E, DP03_0038E, DP03_0039E, DP03_0040E, DP03_0041E, DP03_0042E, DP03_0043E, DP03_0045E FROM acs_2018_modeled.Labor_In_Industry where DP03_0033E > 10 and DP03_0034E > 10 limit 50'
 
@@ -84,8 +116,8 @@ def run():
     query_results = p | 'Read from BigQuery' >> beam.io.Read(bq_source)
 
     # write original PCollection to input file
-    query_results | 'Record original data' >> WriteToText(
-        'labor_in_industry_input.txt')
+    query_results | 'Record original data' >> WriteToText(DIR_PATH +
+                                                          'labor_in_industry_input.txt')
 
     # apply ParDo to format and rename column names and pass to the next Pardo
     formated_pcoll = query_results | 'Format industry' >> beam.ParDo(
@@ -96,11 +128,11 @@ def run():
         FindPredominantIndustry())
 
     # write formatted PCollection to output file
-    processed_pcoll | 'Record processed data' >> WriteToText(
-        'labor_in_industry_output.txt')
+    processed_pcoll | 'Record processed data' >> WriteToText(DIR_PATH +
+                                                             'labor_in_industry_output.txt')
 
     dataset_id = 'acs_2018_modeled'
-    table_id = 'Labor_In_Industry_Beam'
+    table_id = 'Labor_In_Industry_DF'
     schema_id = 'NAME:STRING,\
 Agriculture:FLOAT,\
 Construction:FLOAT,\
@@ -119,19 +151,17 @@ Predominant_Industry_Second:STRING,\
 Predominant_Industry_Third:STRING'
 
     # write PCollection to new BQ table
-
     processed_pcoll | 'Write BQ table' >> beam.io.WriteToBigQuery(dataset=dataset_id,
                                                                   table=table_id,
                                                                   schema=schema_id,
                                                                   project=PROJECT_ID,
                                                                   create_disposition=beam.io.BigQueryDisposition.CREATE_IF_NEEDED,
-                                                                  write_disposition=beam.io.BigQueryDisposition.WRITE_TRUNCATE,
-                                                                  batch_size=int(100))
+                                                                  write_disposition=beam.io.BigQueryDisposition.WRITE_TRUNCATE)
 
     result = p.run()
     result.wait_until_finish()
 
 
 if __name__ == '__main__':
-    logging.getLogger().setLevel(logging.INFO)
+    logging.getLogger().setLevel(logging.ERROR)
     run()
