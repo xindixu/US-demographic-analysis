@@ -1,3 +1,5 @@
 The only transformation we needed is to change the name of the column from codename to description name in the tables.
-
+1. Income table: classify income groups, find average income
+2. Housing value table: classify housing value
+3. Labor in industry table: find predomiant industry
 
