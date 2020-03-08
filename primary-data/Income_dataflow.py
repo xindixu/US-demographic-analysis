@@ -1,3 +1,4 @@
+import datetime
 import logging
 import apache_beam as beam
 from apache_beam.io import ReadFromText
@@ -106,7 +107,7 @@ def run():
     # staging location, temp_location and specify DataflowRunner.
     google_cloud_options = options.view_as(GoogleCloudOptions)
     google_cloud_options.project = PROJECT_ID
-    google_cloud_options.job_name = 'income_df'
+    google_cloud_options.job_name = 'income-df'
     google_cloud_options.staging_location = BUCKET + '/staging'
     google_cloud_options.temp_location = BUCKET + '/temp'
     options.view_as(StandardOptions).runner = 'DataflowRunner'
@@ -120,7 +121,7 @@ def run():
     query_results = p | 'Read from BigQuery' >> beam.io.Read(bq_source)
 
     # write original PCollection to input file
-    query_results | 'Record original data' >> WriteToText('income_input.txt')
+    query_results | 'Record original data' >> WriteToText('input.txt')
 
     # apply ParDo to format null values to 0 and pass to the next Pardo
     formated_pcoll = query_results | 'Format income' >> beam.ParDo(FormatIncomeFn())
@@ -129,7 +130,7 @@ def run():
     classified_pcoll = formated_pcoll | 'Classify income and social-econ status' >> beam.ParDo(ClassifyIncomeFn())
 
     # write formatted PCollection to output file
-    classified_pcoll | 'Record processed data' >> WriteToText('income_output.txt')
+    classified_pcoll | 'Record processed data' >> WriteToText('output.txt')
 
     dataset_id = 'acs_2018_modeled'
     table_id = 'Income_DF'
