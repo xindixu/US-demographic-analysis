@@ -81,7 +81,7 @@ def run():
 
         
      dataset_id = 'acs_2018_modeled'
-     table_id = 'Housing_Unit_Beam'
+     table_id = 'Housing_Unit_DF'
      schema_id = 'NAME:STRING,Detached_Unit_1:FLOAT,Attached_Unit_1:FLOAT,Units_2:FLOAT,Units_3_to_4:FLOAT,Units_5_to_9:FLOAT,Units_10_to_19:FLOAT,Units_20_or_more:FLOAT,Mobile_Home:FLOAT,RV_Boat:FLOAT'
 
      # write PCollection to new BQ table
