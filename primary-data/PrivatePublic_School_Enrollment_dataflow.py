@@ -1,21 +1,27 @@
+import datetime
 import logging
 import apache_beam as beam
 from apache_beam.io import ReadFromText
 from apache_beam.io import WriteToText
+from apache_beam.pipeline import PipelineOptions
+from apache_beam.pipeline import Pipeline
+from apache_beam.options.pipeline_options import GoogleCloudOptions
+from apache_beam.options.pipeline_options import StandardOptions
 
-column_label = ['S1401_C03_008E',     # Undergraduate Public 
-                'S1401_C05_008E',     # Undergraduate Private
-                'S1401_C03_009E',     # Graduate Public
-                'S1401_C05_009E']     # Graduate Private
-
-new_label = ['College_Undergrad_Public',
-             'College_Undergrad_Private',
-             'Grad_HigherEdu_Public',
-             'Grad_HigherEdu_Private']
 
 
 class FormatColumnFn(beam.DoFn):
     def process(self, element):
+        column_label = ['S1401_C03_008E',     # Undergraduate Public 
+                        'S1401_C05_008E',     # Undergraduate Private
+                        'S1401_C03_009E',     # Graduate Public
+                        'S1401_C05_009E']     # Graduate Private
+
+        new_label = ['College_Undergrad_Public',
+                     'College_Undergrad_Private',
+                     'Grad_HigherEdu_Public',
+                     'Grad_HigherEdu_Private']
+        
         for i in column_label:
             if element.get(i) is None:
                 element[i] = 0
@@ -28,16 +34,25 @@ class FormatColumnFn(beam.DoFn):
         return [new_dic]   
            
 def run():
-     PROJECT_ID = 'sashimi-266523' 
+     PROJECT_ID = 'sashimi-266523'  # change to your project id
+     BUCKET = 'gs://sashimi-sushi'  # change to your bucket name
+     DIR_PATH = BUCKET + '/output/' + \
+        datetime.datetime.now().strftime('%Y_%m_%d_%H_%M_%S') + '/'
 
-     # Project ID is required when using the BQ source
-     options = {
-     'project': PROJECT_ID
-     }
-     opts = beam.pipeline.PipelineOptions(flags=[], **options)
+     # Create and set your PipelineOptions.
+     options = PipelineOptions(flags=None)
+ 
+     # For Dataflow execution, set the project, job_name,
+     # staging location, temp_location and specify DataflowRunner.
+     google_cloud_options = options.view_as(GoogleCloudOptions)
+     google_cloud_options.project = PROJECT_ID
+     google_cloud_options.job_name = 'privatepublic-school-enrollment-df'
+     google_cloud_options.staging_location = BUCKET + '/staging'
+     google_cloud_options.temp_location = BUCKET + '/temp'
+     options.view_as(StandardOptions).runner = 'DataflowRunner'
 
-     # Create beam pipeline using local runner
-     p = beam.Pipeline('DirectRunner', options=opts)
+     # Create the Pipeline with the specified options.
+     p = Pipeline(options=options)
     
      sql = 'SELECT NAME, S1401_C03_008E, S1401_C05_008E, S1401_C03_009E, S1401_C05_009E FROM acs_2018_modeled.PrivatePublic_School_Enrollment limit 50'
      bq_source = beam.io.BigQuerySource(query=sql, use_standard_sql=True)
@@ -45,13 +60,13 @@ def run():
      query_results = p | 'Read from BigQuery' >> beam.io.Read(bq_source)
      
      # write raw PCollection to log file
-     query_results | 'Record original data' >> WriteToText('input.txt')
+     query_results | 'Record original data' >> WriteToText(DIR_PATH+'input.txt')
 
      # apply ParDo to format the column of the data
      formatted_pcoll = query_results | 'Format column' >> beam.ParDo(FormatColumnFn())
 
      # write PCollection to log file
-     formatted_pcoll | 'Record the classified data' >> WriteToText('output.txt')
+     formatted_pcoll | 'Record the classified data' >> WriteToText(DIR_PATH+'output.txt')
 
         
      dataset_id = 'acs_2018_modeled'

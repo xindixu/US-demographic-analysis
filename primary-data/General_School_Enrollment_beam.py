@@ -18,7 +18,7 @@ new_label = ['Kindergarden',
              'Grad_HigherEdu']
 
 
-class FormatHousingU_ColumnFn(beam.DoFn):
+class FormatColumnFn(beam.DoFn):
     def process(self, element):
         for i in column_label:
             if element.get(i) is None:
@@ -52,7 +52,7 @@ def run():
      query_results | 'Record original data' >> WriteToText('input.txt')
 
      # apply ParDo to format the column of the data
-     formatted_pcoll = query_results | 'Format column' >> beam.ParDo(FormatHousingU_ColumnFn())
+     formatted_pcoll = query_results | 'Format column' >> beam.ParDo(FormatColumnFn())
 
      # write PCollection to log file
      formatted_pcoll | 'Record the classified data' >> WriteToText('output.txt')

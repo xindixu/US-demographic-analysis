@@ -1,33 +1,31 @@
+import datetime
 import logging
 import apache_beam as beam
 from apache_beam.io import ReadFromText
 from apache_beam.io import WriteToText
+from apache_beam.pipeline import PipelineOptions
+from apache_beam.pipeline import Pipeline
+from apache_beam.options.pipeline_options import GoogleCloudOptions
+from apache_beam.options.pipeline_options import StandardOptions
 
-column_label = ['DP04_0017PE',     # 2014 or later
-                'DP04_0018PE',     # 2010-2013
-                'DP04_0019PE',     # 2000-2009
-                'DP04_0020PE',     # 1990-1999
-                'DP04_0021PE',     # 1980-1989
-                'DP04_0022PE',     # 1970-1979
-                'DP04_0023PE',     # 1960-1969
-                'DP04_0024PE',     # 1950-1959
-                'DP04_0025PE',     # 1940-1949
-                'DP04_0026PE']     # 1939 or before
-
-new_label = ['Built_2014_or_later',
-             'Built_2010_to_2013',
-             'Built_2000_to_2009',
-             'Built_1990_to_1999',
-             'Built_1980_to_1989',
-             'Built_1970_to_1979',
-             'Built_1960_to_1969',
-             'Built_1950_to_1959',
-             'Built_1940_to_1949',
-             'Built_1939_or_before']
 
 
 class FormatColumnFn(beam.DoFn):
     def process(self, element):
+        column_label = ['S1401_C01_004E',     # Kindergarden
+                'S1401_C01_005E',     # Grade 1 to 4
+                'S1401_C01_006E',     # Grade 5 to 8
+                'S1401_C01_007E',     # Grade 9 to 12
+                'S1401_C01_008E',     # College and Undergraduate
+                'S1401_C01_009E']     # Graduate and Higher Education
+
+        new_label = ['Kindergarden',
+                     'Grade1_to_4',
+                     'Grade5_to_8',
+                     'Grade9_to_12',
+                     'College_Undergrad',
+                     'Grad_HigherEdu']
+        
         for i in column_label:
             if element.get(i) is None:
                 element[i] = 0
@@ -52,7 +50,7 @@ def run():
      # staging location, temp_location and specify DataflowRunner.
      google_cloud_options = options.view_as(GoogleCloudOptions)
      google_cloud_options.project = PROJECT_ID
-     google_cloud_options.job_name = 'built_year_df'
+     google_cloud_options.job_name = 'general-school-enrollment-df'
      google_cloud_options.staging_location = BUCKET + '/staging'
      google_cloud_options.temp_location = BUCKET + '/temp'
      options.view_as(StandardOptions).runner = 'DataflowRunner'
@@ -60,25 +58,24 @@ def run():
      # Create the Pipeline with the specified options.
      p = Pipeline(options=options)
     
-     sql = 'SELECT NAME, DP04_0017PE, DP04_0018PE, DP04_0019PE, DP04_0020PE, DP04_0021PE, DP04_0022PE, \
-     DP04_0023PE, DP04_0024PE, DP04_0025PE, DP04_0026PE FROM acs_2018_modeled.Built_Year limit 50'
+     sql = 'SELECT NAME, S1401_C01_004E, S1401_C01_005E, S1401_C01_006E, S1401_C01_007E, S1401_C01_008E, S1401_C01_009E FROM acs_2018_modeled.General_School_Enrollment limit 50'
      bq_source = beam.io.BigQuerySource(query=sql, use_standard_sql=True)
 
      query_results = p | 'Read from BigQuery' >> beam.io.Read(bq_source)
      
      # write raw PCollection to log file
-     query_results | 'Record original data' >> WriteToText('input.txt')
+     query_results | 'Record original data' >> WriteToText(DIR_PATH + 'input.txt')
 
      # apply ParDo to format the column of the data
      formatted_pcoll = query_results | 'Format column' >> beam.ParDo(FormatColumnFn())
 
      # write PCollection to log file
-     formatted_pcoll | 'Record the classified data' >> WriteToText('output.txt')
+     formatted_pcoll | 'Record the classified data' >> WriteToText(DIR_PATH + 'output.txt')
 
         
      dataset_id = 'acs_2018_modeled'
-     table_id = 'Built_Year_Beam'
-     schema_id = 'NAME:STRING,Built_2014_or_later:FLOAT,Built_2010_to_2013:FLOAT,Built_2000_to_2009:FLOAT,Built_1990_to_1999:FLOAT,Built_1980_to_1989:FLOAT,Built_1970_to_1979:FLOAT,Built_1960_to_1969:FLOAT,Built_1950_to_1959:FLOAT,Built_1940_to_1949:FLOAT,Built_1939_or_before:FLOAT'
+     table_id = 'General_School_Enrollment_Beam'
+     schema_id = 'NAME:STRING,Kindergarden:INTEGER,Grade1_to_4:INTEGER,Grade5_to_8:INTEGER,Grade9_to_12:INTEGER,College_Undergrad:INTEGER,Grad_HigherEdu:INTEGER'
 
      # write PCollection to new BQ table
      formatted_pcoll | 'Write BQ table' >> beam.io.WriteToBigQuery(dataset=dataset_id, 

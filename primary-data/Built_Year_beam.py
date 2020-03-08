@@ -3,15 +3,27 @@ import apache_beam as beam
 from apache_beam.io import ReadFromText
 from apache_beam.io import WriteToText
 
-column_label = ['S1401_C03_008E',     # Undergraduate Public 
-                'S1401_C05_008E',     # Undergraduate Private
-                'S1401_C03_009E',     # Graduate Public
-                'S1401_C05_009E']     # Graduate Private
+column_label = ['DP04_0017PE',     # 2014 or later
+                'DP04_0018PE',     # 2010-2013
+                'DP04_0019PE',     # 2000-2009
+                'DP04_0020PE',     # 1990-1999
+                'DP04_0021PE',     # 1980-1989
+                'DP04_0022PE',     # 1970-1979
+                'DP04_0023PE',     # 1960-1969
+                'DP04_0024PE',     # 1950-1959
+                'DP04_0025PE',     # 1940-1949
+                'DP04_0026PE']     # 1939 or before
 
-new_label = ['College_Undergrad_Public',
-             'College_Undergrad_Private',
-             'Grad_HigherEdu_Public',
-             'Grad_HigherEdu_Private']
+new_label = ['Built_2014_or_later',
+             'Built_2010_to_2013',
+             'Built_2000_to_2009',
+             'Built_1990_to_1999',
+             'Built_1980_to_1989',
+             'Built_1970_to_1979',
+             'Built_1960_to_1969',
+             'Built_1950_to_1959',
+             'Built_1940_to_1949',
+             'Built_1939_or_before']
 
 
 class FormatColumnFn(beam.DoFn):
@@ -39,7 +51,8 @@ def run():
      # Create beam pipeline using local runner
      p = beam.Pipeline('DirectRunner', options=opts)
     
-     sql = 'SELECT NAME, S1401_C03_008E, S1401_C05_008E, S1401_C03_009E, S1401_C05_009E FROM acs_2018_modeled.PrivatePublic_School_Enrollment limit 50'
+     sql = 'SELECT NAME, DP04_0017PE, DP04_0018PE, DP04_0019PE, DP04_0020PE, DP04_0021PE, DP04_0022PE, \
+     DP04_0023PE, DP04_0024PE, DP04_0025PE, DP04_0026PE FROM acs_2018_modeled.Built_Year limit 50'
      bq_source = beam.io.BigQuerySource(query=sql, use_standard_sql=True)
 
      query_results = p | 'Read from BigQuery' >> beam.io.Read(bq_source)
@@ -55,8 +68,8 @@ def run():
 
         
      dataset_id = 'acs_2018_modeled'
-     table_id = 'PrivatePublic_School_Enrollment_Beam'
-     schema_id = 'NAME:STRING,College_Undergrad_Public:INTEGER,College_Undergrad_Private:INTEGER,Grad_HigherEdu_Public:INTEGER,Grad_HigherEdu_Private:INTEGER'
+     table_id = 'Built_Year_Beam'
+     schema_id = 'NAME:STRING,Built_2014_or_later:FLOAT,Built_2010_to_2013:FLOAT,Built_2000_to_2009:FLOAT,Built_1990_to_1999:FLOAT,Built_1980_to_1989:FLOAT,Built_1970_to_1979:FLOAT,Built_1960_to_1969:FLOAT,Built_1950_to_1959:FLOAT,Built_1940_to_1949:FLOAT,Built_1939_or_before:FLOAT'
 
      # write PCollection to new BQ table
      formatted_pcoll | 'Write BQ table' >> beam.io.WriteToBigQuery(dataset=dataset_id, 
