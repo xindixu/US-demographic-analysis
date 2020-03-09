@@ -58,15 +58,15 @@ def run():
 
     # write original PCollection to input file
     query_results | 'Record original data' >> WriteToText(
-        'Working_Weeks_Per_Year_input.txt')
+        'input.txt')
 
     # apply ParDo to format and rename column names and pass to the next Pardo
-    formated_pcoll = query_results | 'Format' >> beam.ParDo(
+    formatted_pcoll = query_results | 'Format' >> beam.ParDo(
         Format())
 
     # write formatted PCollection to output file
-    formated_pcoll | 'Record processed data' >> WriteToText(
-        'Working_Weeks_Per_Year_output.txt')
+    formatted_pcoll | 'Record processed data' >> WriteToText(
+        'output.txt')
 
     dataset_id = 'acs_2018_modeled'
     table_id = 'Working_Weeks_Per_Year_Beam'
@@ -82,7 +82,7 @@ No_working:INTEGER'
 
     # write PCollection to new BQ table
 
-    formated_pcoll | 'Write BQ table' >> beam.io.WriteToBigQuery(dataset=dataset_id,
+    formatted_pcoll | 'Write BQ table' >> beam.io.WriteToBigQuery(dataset=dataset_id,
                                                                  table=table_id,
                                                                  schema=schema_id,
                                                                  project=PROJECT_ID,

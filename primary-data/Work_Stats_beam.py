@@ -51,7 +51,7 @@ def run():
 
     # write original PCollection to input file
     query_results | 'Record original data' >> WriteToText(
-        'Work_Stats_input.txt')
+        'input.txt')
 
     # apply ParDo to format and rename column names and pass to the next Pardo
     formated_pcoll = query_results | 'Format' >> beam.ParDo(
@@ -59,7 +59,7 @@ def run():
 
     # write formatted PCollection to output file
     formated_pcoll | 'Record processed data' >> WriteToText(
-        'Work_Stats_output.txt')
+        'output.txt')
 
     dataset_id = 'acs_2018_modeled'
     table_id = 'Work_Stats_Beam'

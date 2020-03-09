@@ -70,7 +70,7 @@ def run():
 
         
      dataset_id = 'acs_2018_modeled'
-     table_id = 'PrivatePublic_School_Enrollment_DF'
+     table_id = 'PrivatePublic_School_Enrollment_Beam_DF'
      schema_id = 'NAME:STRING,College_Undergrad_Public:INTEGER,College_Undergrad_Private:INTEGER,Grad_HigherEdu_Public:INTEGER,Grad_HigherEdu_Private:INTEGER'
 
      # write PCollection to new BQ table

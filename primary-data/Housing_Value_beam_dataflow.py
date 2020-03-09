@@ -44,6 +44,15 @@ class FormatHousingval_ColumnFn(beam.DoFn):
     
 class ClassifyHousingvalFn(beam.DoFn):
     def process(self, element):
+        new_label = ['Less_than_V50k',
+                     'V50k_to_99k',
+                     'V100k_to_149k',
+                     'V150k_to_199k',
+                     'V200k_to_399k',
+                     'V400k_to_499k',
+                     'V500k_to_999k',
+                     'V1M_and_more']
+        
         
         low = element.get(new_label[0]) + element.get(new_label[1]) + element.get(new_label[2]) + element.get(new_label[3])
         middle = element.get(new_label[4]) + element.get(new_label[5])
@@ -105,7 +114,7 @@ def run():
 
         
      dataset_id = 'acs_2018_modeled'
-     table_id = 'Housing_Value_DF'
+     table_id = 'Housing_Value_Beam_DF'
      schema_id = 'NAME:STRING,Less_than_V50k:FLOAT,V50k_to_99k:FLOAT,V100k_to_149k:FLOAT,V150k_to_199k:FLOAT,V200k_to_399k:FLOAT,V400k_to_499k:FLOAT,V500k_to_999k:FLOAT,V1M_and_more:FLOAT,Low_Housing_Value:FLOAT,Middle_Housing_Value:FLOAT,High_Housing_Value:FLOAT'
 
      # write PCollection to new BQ table

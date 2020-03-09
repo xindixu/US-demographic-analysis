@@ -83,7 +83,7 @@ def run():
 
         
      dataset_id = 'acs_2018_modeled'
-     table_id = 'Built_Year_DF'
+     table_id = 'Built_Year_Beam_DF'
      schema_id = 'NAME:STRING,Built_2014_or_later:FLOAT,Built_2010_to_2013:FLOAT,Built_2000_to_2009:FLOAT,Built_1990_to_1999:FLOAT,Built_1980_to_1989:FLOAT,Built_1970_to_1979:FLOAT,Built_1960_to_1969:FLOAT,Built_1950_to_1959:FLOAT,Built_1940_to_1949:FLOAT,Built_1939_or_before:FLOAT'
 
      # write PCollection to new BQ table
