@@ -6,16 +6,16 @@ from apache_beam.io import WriteToText
 class Format(beam.DoFn):
     def process(self, element):
         original_label = [
-            'S2303_C01_009E'
-            'S2303_C01_016E'
-            'S2303_C01_023E'
-            'S2303_C01_030E'
+            'S2303_C01_009E',
+            'S2303_C01_016E',
+            'S2303_C01_023E',
+            'S2303_C01_030E',
         ]
 
         new_label = [
-            'Work_35h_or_more'
-            'Work_16h_to_34h '
-            'Work_1h_to_15h'
+            'Work_35h_or_more',
+            'Work_16h_to_34h',
+            'Work_1h_to_15h',
             'No_working'
         ]
 

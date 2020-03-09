@@ -23,7 +23,7 @@ class Format(beam.DoFn):
             'Work_27_to_39_weeks',
             'Work_14_to_26_weeks',
             'Work_1_to_13_weeks',
-            'No_working (Yearly)'
+            'No_working'
         ]
 
         name = element.get('NAME')
@@ -77,7 +77,8 @@ Work_40_to_47_weeks:INTEGER,\
 Work_27_to_39_weeks:INTEGER,\
 Work_14_to_26_weeks:INTEGER,\
 Work_1_to_13_weeks:INTEGER,\
-No_working (Yearly):INTEGER'
+No_working:INTEGER'
+    
 
     # write PCollection to new BQ table
 

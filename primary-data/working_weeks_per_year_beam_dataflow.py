@@ -27,7 +27,7 @@ class Format(beam.DoFn):
             'Work_27_to_39_weeks',
             'Work_14_to_26_weeks',
             'Work_1_to_13_weeks',
-            'No_working (Yearly)'
+            'No_working'
         ]
 
 
@@ -57,7 +57,7 @@ def run():
     # staging location, temp_location and specify DataflowRunner.
     google_cloud_options = options.view_as(GoogleCloudOptions)
     google_cloud_options.project = PROJECT_ID
-    google_cloud_options.job_name = 'Working_Weeks_Per_Year_Beam_DF'
+    google_cloud_options.job_name = 'working-weeks'
     google_cloud_options.staging_location = BUCKET + '/staging'
     google_cloud_options.temp_location = BUCKET + '/temp'
     options.view_as(StandardOptions).runner = 'DataflowRunner'
@@ -92,7 +92,7 @@ Work_40_to_47_weeks:INTEGER,\
 Work_27_to_39_weeks:INTEGER,\
 Work_14_to_26_weeks:INTEGER,\
 Work_1_to_13_weeks:INTEGER,\
-No_working (Yearly):INTEGER'
+No_working:INTEGER'
 
     # write PCollection to new BQ table
     formated_pcoll | 'Write BQ table' >> beam.io.WriteToBigQuery(dataset=dataset_id,

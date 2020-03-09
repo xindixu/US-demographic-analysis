@@ -11,17 +11,17 @@ from apache_beam.options.pipeline_options import StandardOptions
 class Format(beam.DoFn):
     def process(self, element):
         original_label = [
-            'S2303_C01_009E'
-            'S2303_C01_016E'
-            'S2303_C01_023E'
-            'S2303_C01_030E'
+            'S2303_C01_009E',
+            'S2303_C01_016E',
+            'S2303_C01_023E',
+            'S2303_C01_030E',
         ]
 
         new_label = [
-            'Work_35h_or_more'
-            'Work_16h_to_34h '
-            'Work_1h_to_15h'
-            'No_working (Weekly)'
+            'Work_35h_or_more',
+            'Work_16h_to_34h',
+            'Work_1h_to_15h',
+            'No_working',
         ]
 
         name = element.get('NAME')
@@ -50,7 +50,7 @@ def run():
     # staging location, temp_location and specify DataflowRunner.
     google_cloud_options = options.view_as(GoogleCloudOptions)
     google_cloud_options.project = PROJECT_ID
-    google_cloud_options.job_name = 'Working_Hours_Per_Week_Beam_DF'
+    google_cloud_options.job_name = 'working-hours'
     google_cloud_options.staging_location = BUCKET + '/staging'
     google_cloud_options.temp_location = BUCKET + '/temp'
     options.view_as(StandardOptions).runner = 'DataflowRunner'

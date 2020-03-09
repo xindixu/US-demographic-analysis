@@ -48,7 +48,7 @@ def run():
     # staging location, temp_location and specify DataflowRunner.
     google_cloud_options = options.view_as(GoogleCloudOptions)
     google_cloud_options.project = PROJECT_ID
-    google_cloud_options.job_name = 'Work_Stats_Beam_DF'
+    google_cloud_options.job_name = 'work-stat-df'
     google_cloud_options.staging_location = BUCKET + '/staging'
     google_cloud_options.temp_location = BUCKET + '/temp'
     options.view_as(StandardOptions).runner = 'DataflowRunner'
@@ -77,10 +77,9 @@ def run():
     dataset_id = 'acs_2018_modeled'
     table_id = 'Work_Stats_Beam_DF'
     schema_id = 'NAME:STRING,\
-Work_35h_or_more:INTEGER, \
-Work_16h_to_34h:INTEGER, \
-Work_1h_to_15h:INTEGER, \
-No_working:INTEGER'
+Mean_hours:FLOAT,\
+Median_age_working:FLOAT,\
+Full_time_year_round:INTEGER'
 
     # write PCollection to new BQ table
     formated_pcoll | 'Write BQ table' >> beam.io.WriteToBigQuery(dataset=dataset_id,
