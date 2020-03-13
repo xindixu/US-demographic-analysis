@@ -40,15 +40,14 @@ class FormatIndustry(beam.DoFn):
             'Public_Administration'
         ]
 
-
-
-        name = element.get('NAME')
         for i in original_label:
             value = element.get(i)
             if value is None:
                 element[i] = 0
         new_dic = dict()
-        new_dic['NAME'] = name
+        name = element.get('NAME')
+        num = name[6:]
+        new_dic['ZCTA5'] = num
         for i in range(len(original_label)):
             new_dic[new_label[i]] = element.get(original_label[i])
 
@@ -80,7 +79,7 @@ class FindPredominantIndustry(beam.DoFn):
             new_dic[new_label[i]] = element.get(new_label[i])
 
         sorted_industry = sorted(new_dic.items(), key=lambda x: x[1])
-        new_dic['NAME'] = element.get('NAME')
+        new_dic['ZCTA5'] = element.get('ZCTA5')
         new_dic['Predominant_Industry_First'] = sorted_industry[-1][0] if sorted_industry[-1][1] > 0 else None
         new_dic['Predominant_Industry_Second'] = sorted_industry[-2][0] if sorted_industry[-2][1] > 0 else None
         new_dic['Predominant_Industry_Third'] = sorted_industry[-3][0] if sorted_industry[-3][1] > 0 else None
@@ -109,7 +108,7 @@ def run():
     # Create the Pipeline with the specified options.
     p = Pipeline(options=options)
 
-    sql = 'SELECT NAME, DP03_0033E, DP03_0034E, DP03_0035E, DP03_0036E, DP03_0037E, DP03_0038E, DP03_0039E, DP03_0040E, DP03_0041E, DP03_0042E, DP03_0043E, DP03_0045E FROM acs_2018_modeled.Labor_In_Industry where DP03_0033E > 10 and DP03_0034E > 10 limit 50'
+    sql = 'SELECT NAME, DP03_0033E, DP03_0034E, DP03_0035E, DP03_0036E, DP03_0037E, DP03_0038E, DP03_0039E, DP03_0040E, DP03_0041E, DP03_0042E, DP03_0043E, DP03_0045E FROM acs_2018_modeled.Labor_In_Industry'
 
     bq_source = beam.io.BigQuerySource(query=sql, use_standard_sql=True)
 
@@ -132,8 +131,8 @@ def run():
                                                              'labor_in_industry_output.txt')
 
     dataset_id = 'acs_2018_modeled'
-    table_id = 'Labor_In_Industry_DF'
-    schema_id = 'NAME:STRING,\
+    table_id = 'Labor_In_Industry_Beam_DF'
+    schema_id = 'ZCTA5:STRING,\
 Agriculture:FLOAT,\
 Construction:FLOAT,\
 Manufacturing:FLOAT,\

@@ -37,7 +37,9 @@ class FormatHousingU_ColumnFn(beam.DoFn):
                 element[i] = 0
                 
         new_dic = dict()
-        new_dic['NAME'] = element.get('NAME')
+        name = element.get('NAME')
+        num = name[6:]
+        new_dic['ZCTA5'] = num
         for i in range(len(new_label)):
             new_dic[new_label[i]] = element.get(column_label[i])
         #print(new_dic)
@@ -65,7 +67,7 @@ def run():
      p = Pipeline(options=options)
     
      sql = 'SELECT NAME, DP04_0007PE, DP04_0008PE, DP04_0009PE, DP04_0010PE, DP04_0011PE, DP04_0012PE, \
-     DP04_0013PE, DP04_0014PE, DP04_0015PE FROM acs_2018_modeled.Housing_Unit limit 50'
+     DP04_0013PE, DP04_0014PE, DP04_0015PE FROM acs_2018_modeled.Housing_Unit'
      bq_source = beam.io.BigQuerySource(query=sql, use_standard_sql=True)
 
      query_results = p | 'Read from BigQuery' >> beam.io.Read(bq_source)
@@ -82,7 +84,7 @@ def run():
         
      dataset_id = 'acs_2018_modeled'
      table_id = 'Housing_Unit_Beam_DF'
-     schema_id = 'NAME:STRING,Detached_Unit_1:FLOAT,Attached_Unit_1:FLOAT,Units_2:FLOAT,Units_3_to_4:FLOAT,Units_5_to_9:FLOAT,Units_10_to_19:FLOAT,Units_20_or_more:FLOAT,Mobile_Home:FLOAT,RV_Boat:FLOAT'
+     schema_id = 'ZCTA5:STRING,Detached_Unit_1:FLOAT,Attached_Unit_1:FLOAT,Units_2:FLOAT,Units_3_to_4:FLOAT,Units_5_to_9:FLOAT,Units_10_to_19:FLOAT,Units_20_or_more:FLOAT,Mobile_Home:FLOAT,RV_Boat:FLOAT'
 
      # write PCollection to new BQ table
      formatted_pcoll | 'Write BQ table' >> beam.io.WriteToBigQuery(dataset=dataset_id, 

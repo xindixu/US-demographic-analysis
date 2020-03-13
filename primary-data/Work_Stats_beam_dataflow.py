@@ -23,13 +23,14 @@ class Format(beam.DoFn):
             'Full_time_year_round'
         ]
 
-        name = element.get('NAME')
         for i in original_label:
             value = element.get(i)
             if value is None:
                 element[i] = 0
         new_dic = dict()
-        new_dic['NAME'] = name
+        name = element.get('NAME')
+        num = name[6:]
+        new_dic['ZCTA5'] = num
         for i in range(len(original_label)):
             new_dic[new_label[i]] = element.get(original_label[i])
 
@@ -76,7 +77,7 @@ def run():
 
     dataset_id = 'acs_2018_modeled'
     table_id = 'Work_Stats_Beam_DF'
-    schema_id = 'NAME:STRING,\
+    schema_id = 'ZCTA5:STRING,\
 Mean_hours:FLOAT,\
 Median_age_working:FLOAT,\
 Full_time_year_round:INTEGER'

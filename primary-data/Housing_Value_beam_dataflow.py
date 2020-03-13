@@ -61,8 +61,9 @@ class ClassifyHousingvalFn(beam.DoFn):
         new_keys = ['Low_Housing_Value','Middle_Housing_Value', 'High_Housing_Value']
         
         new_dic = dict()
-        
-        new_dic['NAME'] = element.get('NAME')
+        name = element.get('NAME')
+        num = name[6:]
+        new_dic['ZCTA5'] = num
         for i in range(len(new_label)):
             new_dic[new_label[i]] = element.get(new_label[i])
         
@@ -95,7 +96,7 @@ def run():
      p = Pipeline(options=options)
     
      sql = 'SELECT NAME, DP04_0081PE, DP04_0082PE, DP04_0083PE, DP04_0084PE, DP04_0085PE, DP04_0086PE, \
-     DP04_0087PE, DP04_0088PE FROM acs_2018_modeled.Housing_Value limit 50'
+     DP04_0087PE, DP04_0088PE FROM acs_2018_modeled.Housing_Value'
      bq_source = beam.io.BigQuerySource(query=sql, use_standard_sql=True)
 
      query_results = p | 'Read from BigQuery' >> beam.io.Read(bq_source)
@@ -115,7 +116,7 @@ def run():
         
      dataset_id = 'acs_2018_modeled'
      table_id = 'Housing_Value_Beam_DF'
-     schema_id = 'NAME:STRING,Less_than_V50k:FLOAT,V50k_to_99k:FLOAT,V100k_to_149k:FLOAT,V150k_to_199k:FLOAT,V200k_to_399k:FLOAT,V400k_to_499k:FLOAT,V500k_to_999k:FLOAT,V1M_and_more:FLOAT,Low_Housing_Value:FLOAT,Middle_Housing_Value:FLOAT,High_Housing_Value:FLOAT'
+     schema_id = 'ZCTA5:STRING,Less_than_V50k:FLOAT,V50k_to_99k:FLOAT,V100k_to_149k:FLOAT,V150k_to_199k:FLOAT,V200k_to_399k:FLOAT,V400k_to_499k:FLOAT,V500k_to_999k:FLOAT,V1M_and_more:FLOAT,Low_Housing_Value:FLOAT,Middle_Housing_Value:FLOAT,High_Housing_Value:FLOAT'
 
      # write PCollection to new BQ table
      classified_pcoll | 'Write BQ table' >> beam.io.WriteToBigQuery(dataset=dataset_id, 

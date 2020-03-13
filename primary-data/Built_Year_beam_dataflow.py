@@ -39,7 +39,9 @@ class FormatColumnFn(beam.DoFn):
                 element[i] = 0
                 
         new_dic = dict()
-        new_dic['NAME'] = element.get('NAME')
+        name = element.get('NAME')
+        num = name[6:]
+        new_dic['ZCTA5'] = num
         for i in range(len(new_label)):
             new_dic[new_label[i]] = element.get(column_label[i])
         #print(new_dic)
@@ -67,7 +69,7 @@ def run():
      p = Pipeline(options=options)
     
      sql = 'SELECT NAME, DP04_0017PE, DP04_0018PE, DP04_0019PE, DP04_0020PE, DP04_0021PE, DP04_0022PE, \
-     DP04_0023PE, DP04_0024PE, DP04_0025PE, DP04_0026PE FROM acs_2018_modeled.Built_Year limit 50'
+     DP04_0023PE, DP04_0024PE, DP04_0025PE, DP04_0026PE FROM acs_2018_modeled.Built_Year'
      bq_source = beam.io.BigQuerySource(query=sql, use_standard_sql=True)
 
      query_results = p | 'Read from BigQuery' >> beam.io.Read(bq_source)
@@ -84,7 +86,7 @@ def run():
         
      dataset_id = 'acs_2018_modeled'
      table_id = 'Built_Year_Beam_DF'
-     schema_id = 'NAME:STRING,Built_2014_or_later:FLOAT,Built_2010_to_2013:FLOAT,Built_2000_to_2009:FLOAT,Built_1990_to_1999:FLOAT,Built_1980_to_1989:FLOAT,Built_1970_to_1979:FLOAT,Built_1960_to_1969:FLOAT,Built_1950_to_1959:FLOAT,Built_1940_to_1949:FLOAT,Built_1939_or_before:FLOAT'
+     schema_id = 'ZCTA5:STRING,Built_2014_or_later:FLOAT,Built_2010_to_2013:FLOAT,Built_2000_to_2009:FLOAT,Built_1990_to_1999:FLOAT,Built_1980_to_1989:FLOAT,Built_1970_to_1979:FLOAT,Built_1960_to_1969:FLOAT,Built_1950_to_1959:FLOAT,Built_1940_to_1949:FLOAT,Built_1939_or_before:FLOAT'
 
      # write PCollection to new BQ table
      formatted_pcoll | 'Write BQ table' >> beam.io.WriteToBigQuery(dataset=dataset_id, 

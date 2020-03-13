@@ -27,7 +27,9 @@ class FormatColumnFn(beam.DoFn):
                 element[i] = 0
                 
         new_dic = dict()
-        new_dic['NAME'] = element.get('NAME')
+        name = element.get('NAME')
+        num = name[6:]
+        new_dic['ZCTA5'] = num
         for i in range(len(new_label)):
             new_dic[new_label[i]] = element.get(column_label[i])
         #print(new_dic)
@@ -54,7 +56,7 @@ def run():
      # Create the Pipeline with the specified options.
      p = Pipeline(options=options)
     
-     sql = 'SELECT NAME, S1401_C03_008E, S1401_C05_008E, S1401_C03_009E, S1401_C05_009E FROM acs_2018_modeled.PrivatePublic_School_Enrollment limit 50'
+     sql = 'SELECT NAME, S1401_C03_008E, S1401_C05_008E, S1401_C03_009E, S1401_C05_009E FROM acs_2018_modeled.PrivatePublic_School_Enrollment'
      bq_source = beam.io.BigQuerySource(query=sql, use_standard_sql=True)
 
      query_results = p | 'Read from BigQuery' >> beam.io.Read(bq_source)
@@ -71,7 +73,7 @@ def run():
         
      dataset_id = 'acs_2018_modeled'
      table_id = 'PrivatePublic_School_Enrollment_Beam_DF'
-     schema_id = 'NAME:STRING,College_Undergrad_Public:INTEGER,College_Undergrad_Private:INTEGER,Grad_HigherEdu_Public:INTEGER,Grad_HigherEdu_Private:INTEGER'
+     schema_id = 'ZCTA5:STRING,College_Undergrad_Public:INTEGER,College_Undergrad_Private:INTEGER,Grad_HigherEdu_Public:INTEGER,Grad_HigherEdu_Private:INTEGER'
 
      # write PCollection to new BQ table
      formatted_pcoll | 'Write BQ table' >> beam.io.WriteToBigQuery(dataset=dataset_id, 

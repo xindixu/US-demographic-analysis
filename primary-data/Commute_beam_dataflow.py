@@ -30,13 +30,15 @@ class FormatFn(beam.DoFn):
                     'Work_From_Home',
                     'Mean_Travel_Time_To_Work']
         
-        name = element.get('NAME')
+        
         for i in column_name:
             value = element.get(i)
             if value is None:
                 element[i] = 0
         new_dic = dict()
-        new_dic['NAME'] = name
+        name = element.get('NAME')
+        num = name[6:]
+        new_dic['ZCTA5'] = num
         for i in range(len(column_name)):
             new_dic[new_label[i]] = element.get(column_name[i])
         
@@ -65,7 +67,7 @@ def run():
     # Create the Pipeline with the specified options.
     p = Pipeline(options=options)
 
-    sql = 'SELECT NAME, DP03_0019PE, DP03_0020PE, DP03_0021PE, DP03_0022PE, DP03_0023PE, DP03_0024PE, DP03_0025E FROM acs_2018_modeled.Commute limit 50'
+    sql = 'SELECT NAME, DP03_0019PE, DP03_0020PE, DP03_0021PE, DP03_0022PE, DP03_0023PE, DP03_0024PE, DP03_0025E FROM acs_2018_modeled.Commute'
     bq_source = beam.io.BigQuerySource(query=sql, use_standard_sql=True)
 
     query_results = p | 'Read from BigQuery' >> beam.io.Read(bq_source)
@@ -81,7 +83,7 @@ def run():
 
     dataset_id = 'acs_2018_modeled'
     table_id = 'Commute_Beam_DF'
-    schema_id = 'NAME:STRING,Drive_Alone:FLOAT,Carpooled:FLOAT,Public_Transportation:FLOAT,Walking:FLOAT,Others:FLOAT,Work_From_Home:FLOAT,Mean_Travel_Time_To_Work:FLOAT'
+    schema_id = 'ZCTA5:STRING,Drive_Alone:FLOAT,Carpooled:FLOAT,Public_Transportation:FLOAT,Walking:FLOAT,Others:FLOAT,Work_From_Home:FLOAT,Mean_Travel_Time_To_Work:FLOAT'
 
     # write PCollection to new BQ table
     

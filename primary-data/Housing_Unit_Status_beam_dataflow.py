@@ -26,7 +26,9 @@ class FormatHousingU_ColumnFn(beam.DoFn):
                 element[i] = 0
                 
         new_dic = dict()
-        new_dic['NAME'] = element.get('NAME')
+        name = element.get('NAME')
+        num = name[6:]
+        new_dic['ZCTA5'] = num
         for i in range(len(new_label)):
             new_dic[new_label[i]] = element.get(column_label[i])
         #print(new_dic)
@@ -53,7 +55,7 @@ def run():
      # Create the Pipeline with the specified options.
      p = Pipeline(options=options)
     
-     sql = 'SELECT NAME, DP04_0001E, DP04_0002PE, DP04_0003PE FROM acs_2018_modeled.Housing_Unit_Status order by NAME limit 50'
+     sql = 'SELECT NAME, DP04_0001E, DP04_0002PE, DP04_0003PE FROM acs_2018_modeled.Housing_Unit_Status order by NAME'
      bq_source = beam.io.BigQuerySource(query=sql, use_standard_sql=True)
 
      query_results = p | 'Read from BigQuery' >> beam.io.Read(bq_source)
@@ -70,7 +72,7 @@ def run():
         
      dataset_id = 'acs_2018_modeled'
      table_id = 'Housing_Unit_Status_Beam_DF'
-     schema_id = 'NAME:STRING,Total_Housing_Units:INTEGER,Occupied_Housing_Units:FLOAT,Vacant_Housing_Units:FLOAT'
+     schema_id = 'ZCTA5:STRING,Total_Housing_Units:INTEGER,Occupied_Housing_Units:FLOAT,Vacant_Housing_Units:FLOAT'
 
      # write PCollection to new BQ table
      formatted_pcoll | 'Write BQ table' >> beam.io.WriteToBigQuery(dataset=dataset_id, 
