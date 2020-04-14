@@ -48,9 +48,8 @@ GEO_ID,NAME,S2303_C01_001E,S2303_C01_001M,S2303_C02_001E,S2303_C02_001M,S2303_C0
 
 # Secondary datasets
 ## Institute of Museum and Library Services - Museum Universe - 1 file
-[link](https://public.enigma.com/datasets/institute-of-museum-and-library-services-museum-universe/d728707c-9c42-44fd-9bb3-0e9fc356f76d)
-It includes basic information on aquariums, arboretums, botanical gardens, art museums, children's museums, general museums, historic houses and sites, history museums, nature centers, natural history and anthropology museums, planetariums, science and technology centers, specialized museums, and zoos
-
+[link](https://www.imls.gov/research-evaluation/data-collection/museum-data-files)
+It includes basic information on aquariums, arboretums, botanical gardens, art museums, children's museums, general museums, historic houses and sites, history museums, nature centers, natural history and anthropology museums, planetariums, science and technology centers, specialized museums, and zoos.
 
 **We hope to gain insights into these areas:**
 
