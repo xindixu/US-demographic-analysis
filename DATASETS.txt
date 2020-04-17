@@ -49,7 +49,7 @@ GEO_ID,NAME,S2303_C01_001E,S2303_C01_001M,S2303_C02_001E,S2303_C02_001M,S2303_C0
 # Secondary datasets
 ## Institute of Museum and Library Services - Museum Universe - 1 file
 [link](https://www.imls.gov/research-evaluation/data-collection/museum-data-files)
-It includes basic information on aquariums, arboretums, botanical gardens, art museums, children's museums, general museums, historic houses and sites, history museums, nature centers, natural history and anthropology museums, planetariums, science and technology centers, specialized museums, and zoos.
+It includes basic information on aquariums, arboretums, botanical gardens, art museums, children's museums, general museums, historic houses and sites, history museums, nature centers, natural history and anthropology museums, planetariums, science and technology centers, specialized museums, and zoos in zip code.
 
 **We hope to gain insights into these areas:**
 
@@ -58,28 +58,18 @@ It includes basic information on aquariums, arboretums, botanical gardens, art m
 
 
 
-## US Government Spending (2006-Present) - 5 files
-[link](https://public.enigma.com/browse/collection/u-s-government-spending-direct-payments/63afcb57-30bd-4c6d-9fc2-043c0025c6f6)
-*We'll only use ones from 2010-2015*
-This includes US government spending on individuals who have been assessed as needing services, or social service provisions, generally for the large entitlement programs such as Social Security, Unemployment Insurance, Housing Choice Vouchers, and Federal Pell Grants.
-Locations are labelled by 5 digit + 4 digit extension zipcode
-
+## Education Demographic and Geographic Estimates 2017-2018 - 3 files
+[link] (https://nces.ed.gov/programs/edge/Geographic/SchoolLocations)
+This dataset include information about Public School, Private School and Postsecondary School in 2017-2018 in zip code.
 
 **We hope to gain insights into these areas:**
 
-1. Which areas recieved the most funding/subsidies from the government?
-2. What type of funding (education, food, housing) is the most prominent in the neighborhood?
+1. Which neighborhood has better education quantitatively and qualitatively?
+2. Does the education and its demand in a certain neighborhood/area need more attention from the government?
 
 
-
-## Centers for Medicare & Medicaid Services - 5 collections with several files
-[link](https://public.enigma.com/browse/collection/centers-for-medicare-medicaid-services/e03f7200-9e70-416c-83ab-bdd76193dc8c)
-This datasets include information about Medicare health plans, Medicare financial management, Medicare fee for service operations, Medicaid and children's health, survey & certification and quality improvement. This information might be connected to the the information of the households to explore the medicare and medicaid services in the area/neighborhood which can affect the demanding of the households location.
-
-
-## Gun Violence in the US - 1 file + 2 matching files
-[link] (https://www.kaggle.com/jameslko/gun-violence-data/version/1#gun-violence-data_01-2013_03-2018.csv)
-This dataset include information about crime violence in the US that might be connected to determine the safety level of the neighborhood/area. There will be 2 matching files with longitude, latitude to zipcode and zipcode to ZCTA.
-[link] (https://public.opendatasoft.com/explore/dataset/us-zip-code-latitude-and-longitude/table/)
+## Zipcode to ZCTA5 - 1 file
 [link] (https://www.udsmapper.org/zcta-crosswalk.cfm)
+This dataset is used to convert zipcode to ZCTA5 for linking secondary dataset to primary dataset
+
 
