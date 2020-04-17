@@ -1,0 +1,146 @@
+[
+ {
+   "description": "",
+   "name": "NCESSCH",
+   "type": "STRING",
+   "mode": "NULLABLE"
+ },
+ {
+   "description": "",
+   "name": "NAME",
+   "type": "STRING",
+   "mode": "NULLABLE"
+ },
+ {
+   "description": "",
+   "name": "OPSTFIPS",
+   "type": "STRING",
+   "mode": "NULLABLE"
+ },
+ {
+   "description": "",
+   "name": "STREET",
+   "type": "STRING",
+   "mode": "NULLABLE"
+ },
+ {
+   "description": "",
+   "name": "CITY",
+   "type": "STRING",
+   "mode": "NULLABLE"
+ },
+ {
+   "description": "",
+   "name": "STATE",
+   "type": "STRING",
+   "mode": "NULLABLE"
+ },
+ {
+   "description": "",
+   "name": "ZIP",
+   "type": "STRING",
+   "mode": "NULLABLE"
+ },
+ {
+   "description": "",
+   "name": "STFIP",
+   "type": "STRING",
+   "mode": "NULLABLE"
+ },
+ {
+   "description": "",
+   "name": "CNTY",
+   "type": "STRING",
+   "mode": "NULLABLE"
+ },
+ {
+   "description": "",
+   "name": "NMCNTY",
+   "type": "STRING",
+   "mode": "NULLABLE"
+ },
+ {
+   "description": "",
+   "name": "LOCALE",
+   "type": "STRING",
+   "mode": "NULLABLE"
+ },
+ {
+   "description": "",
+   "name": "LAT",
+   "type": "STRING",
+   "mode": "NULLABLE"
+ },	
+ {
+   "description": "",
+   "name": "LON",
+   "type": "STRING",
+   "mode": "NULLABLE"
+ },
+ {
+   "description": "",
+   "name": "CBSA",
+   "type": "STRING",
+   "mode": "NULLABLE"
+ },
+ {
+   "description": "",
+   "name": "NMCBSA",
+   "type": "STRING",
+   "mode": "NULLABLE"
+ },
+ {
+   "description": "",
+   "name": "CBSATYPE",
+   "type": "STRING",
+   "mode": "NULLABLE"
+ },
+ {
+   "description": "",
+   "name": "CSA",
+   "type": "STRING",
+   "mode": "NULLABLE"
+ },
+ {
+   "description": "",
+   "name": "NMCSA",
+   "type": "STRING",
+   "mode": "NULLABLE"
+ },
+ {
+   "description": "",
+   "name": "NECTA",
+   "type": "STRING",
+   "mode": "NULLABLE"
+ },
+ {
+   "description": "",
+   "name": "NMNECTA",
+   "type": "STRING",
+   "mode": "NULLABLE"
+ },
+ {
+   "description": "",
+   "name": "CD",
+   "type": "STRING",
+   "mode": "NULLABLE"
+ },
+ {
+   "description": "",
+   "name": "SLDL",
+   "type": "STRING",
+   "mode": "NULLABLE"
+ },
+ {
+   "description": "",
+   "name": "SLDU",
+   "type": "STRING",
+   "mode": "NULLABLE"
+ },
+ {
+   "description": "",
+   "name": "SCHOOLYEAR",
+   "type": "STRING",
+   "mode": "NULLABLE"
+ }
+]
