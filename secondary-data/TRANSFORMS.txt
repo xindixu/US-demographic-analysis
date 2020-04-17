@@ -1,0 +1,13 @@
+We have three datasets
+
+1. iml_2018_modeled: 
+public_resource: primary key is MID
+
+2. edge_1718_modeled:
+postsecondary_school: primary key is SCHOOLID
+private_school: primary key is SCHOOLID
+public_school: primary key is SCHOOLID
+
+3. uds_mapper:
+zip_to_zcta5: primary key is ZIPCODE
+Note: However, ZIPCODE and ZCTA5 needs some transformation to be consistent with primary key in primary dataset and other secondary dataset
