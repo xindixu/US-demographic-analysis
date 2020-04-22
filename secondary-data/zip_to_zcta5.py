@@ -10,8 +10,8 @@ class Format(beam.DoFn):
         ZCTA5 = element.get('ZCTA5')
         STATE = element.get('STATE')
         new_dic = dict()
-        new_dic['ZIPCODE'] = f"{ZIPCODE:05}"
-        new_dic['ZCTA5'] = f"{ZCTA5:05}"
+        new_dic['ZIPCODE'] = str(ZIPCODE).zfill(5)
+        new_dic['ZCTA5'] = str(ZCTA5).zfill(5)
         new_dic['STATE'] = STATE
         return [new_dic]
 
