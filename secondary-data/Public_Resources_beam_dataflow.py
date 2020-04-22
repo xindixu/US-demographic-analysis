@@ -11,6 +11,7 @@ from apache_beam.options.pipeline_options import StandardOptions
 class Format(beam.DoFn):
     def process(self, element):
         new_dic = element
+        ZIPCODE = element.get('ZIPCODE')
         new_dic['ZIPCODE'] = str(ZIPCODE).zfill(5)
         return [new_dic]
 
