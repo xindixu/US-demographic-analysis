@@ -7,7 +7,8 @@ from apache_beam.io import WriteToText
 class Format(beam.DoFn):
     def process(self, element):
         new_dic = element
-        new_dic['ZIPCODE'] = str(ZIPCODE).zfill(5)
+        ZIPCODE = element.get('ZIPCODE')
+        new_dic['ZIPCODE'] = ZIPCODE.zfill(5)
         return [new_dic]
 
 
