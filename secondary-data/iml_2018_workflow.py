@@ -12,19 +12,19 @@ default_dag_args = {
 staging_dataset = 'iml_2018_workflow_staging'
 modeled_dataset = 'iml_2018_workflow_modeled'
 table_name = 'Public_Resources'
-staging_name = f"{staging_dataset}.{table_name}"
-modeled_name = f"{modeled_dataset}.{table_name}"
+staging_name = staging_dataset + '.' + table_name
+modeled_name = modeled_dataset + '.' + table_name
 
 bq_query_start = 'bq query --use_legacy_sql=false '
 
-create_public_resources_sql = f"create or replace table {modeled_name} as \
+create_public_resources_sql = 'create or replace table ' + modeled_name + ' as \
                                 select MID, DISCIPL, COMMONNAME, LEGALNAME, ADSTREET, ADCITY, ADSTATE, \
                                 cast(ADZIP5 as STRING) as ZIPCODE, \
                                 PHONE, WEBURL, \
                                 cast(replace(INCOME15, ' ', '0') as FLOAT64) as INCOME, \
                                 cast(replace(REVENUE15, ' ', '0') as FLOAT64) as REVENUE, \
                                 LONGITUDE, LATITUDE\
-                                from {staging_name}"
+                                from ' + staging_name
 
 
 with models.DAG(
