@@ -50,6 +50,10 @@ with models.DAG(
         task_id='create_public_resources',
         bash_command=bq_query_start + "'" + create_public_resources_sql + "'", 
         trigger_rule='one_success')
+    
+    public_resources = BashOperator(
+        task_id='public_resources',
+        bash_command='python /home/jupyter/airflow/dags/Public_Resources_beam_dataflow.py'
+        trigger_rule='one_success')
 
-create_staging >> create_modeled >> load_public_resources >> create_public_resources 
-print('done')
+create_staging >> create_modeled >> load_public_resources >> create_public_resources >> public_resources
