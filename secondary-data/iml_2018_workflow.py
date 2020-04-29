@@ -21,14 +21,14 @@ create_public_resources_sql = 'create or replace table ' + modeled_name + ' as \
                                 select MID, DISCIPL, COMMONNAME, LEGALNAME, ADSTREET, ADCITY, ADSTATE, \
                                 cast(ADZIP5 as STRING) as ZIPCODE, \
                                 PHONE, WEBURL, \
-                                cast(replace(INCOME15, ' ', '0') as FLOAT64) as INCOME, \
-                                cast(replace(REVENUE15, ' ', '0') as FLOAT64) as REVENUE, \
+                                cast(replace(INCOME15, " ", "0") as FLOAT64) as INCOME, \
+                                cast(replace(REVENUE15, " ", "0") as FLOAT64) as REVENUE, \
                                 LONGITUDE, LATITUDE\
                                 from ' + staging_name
 
 
 with models.DAG(
-        'college_workflow1',
+        'iml_2018_workflow',
         schedule_interval=None,
         default_args=default_dag_args) as dag:
 
@@ -43,7 +43,7 @@ with models.DAG(
     load_public_resources = BashOperator(
         task_id='load_public_resources',
         bash_command='bq --location=US load --autodetect --allow_quoted_newlines --allow_jagged_rows --ignore_unknown_values \
-                         --source_format=CSV ' + staging_name + ' "gs://iml-2018/public_resources.csv',
+                         --source_format=CSV ' + staging_name + ' "gs://iml-2018/public_resources.csv"',
         trigger_rule='one_success')
 
     create_public_resources = BashOperator(
@@ -52,3 +52,4 @@ with models.DAG(
         trigger_rule='one_success')
 
 create_staging >> create_modeled >> load_public_resources >> create_public_resources 
+print('done')
