@@ -23,7 +23,8 @@ create_public_resources_sql = 'create or replace table ' + modeled_name + ' as \
                                 PHONE, WEBURL, \
                                 cast(replace(INCOME15, " ", "0") as FLOAT64) as INCOME, \
                                 cast(replace(REVENUE15, " ", "0") as FLOAT64) as REVENUE, \
-                                LONGITUDE, LATITUDE\
+                                cast(replace(LONGITUDE, " ", "0") as FLOAT64) as LONGITUDE, \
+                                cast(replace(LATITUDE, " ", "0") as FLOAT64) as LATITUDE \
                                 from ' + staging_name
 
 
@@ -53,7 +54,6 @@ with models.DAG(
     
     public_resources = BashOperator(
         task_id='public_resources',
-        bash_command='python /home/jupyter/airflow/dags/Public_Resources_beam_dataflow.py'
-        trigger_rule='one_success')
+        bash_command='python /home/jupyter/airflow/dags/Public_Resources_beam_dataflow.py')
 
 create_staging >> create_modeled >> load_public_resources >> create_public_resources >> public_resources
