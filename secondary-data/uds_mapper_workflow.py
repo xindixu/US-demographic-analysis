@@ -18,9 +18,9 @@ modeled_name = modeled_dataset + '.' + table_name
 bq_query_start = 'bq query --use_legacy_sql=false '
 
 create_mapper_sql = 'create or replace table ' + modeled_name + ' as \
-                                select ZIP_CODE as ZIPCODE, STATE, cast(ZCTA as STRING) as ZCTA5\
-                                from ' + staging_name +
-                                ' where ZCTA is not NULL order by ZIPCODE'
+                      select ZIP_CODE as ZIPCODE, STATE, cast(ZCTA as STRING) as ZCTA5\
+                      from ' + staging_name +
+                      ' where ZCTA is not NULL order by ZIPCODE'
 
 
 with models.DAG(
