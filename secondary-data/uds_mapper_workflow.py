@@ -18,9 +18,8 @@ modeled_name = modeled_dataset + '.' + table_name
 bq_query_start = 'bq query --use_legacy_sql=false '
 
 create_mapper_sql = 'create or replace table ' + modeled_name + ' as \
-                      select ZIP_CODE as ZIPCODE, STATE, cast(ZCTA as STRING) as ZCTA5\
-                      from ' + staging_name +
-                      ' where ZCTA is not NULL order by ZIPCODE'
+                      select ZIP_CODE as ZIPCODE, STATE, cast(ZCTA as STRING) as ZCTA5 \
+                      from ' + staging_name + ' where ZCTA is not NULL order by ZIPCODE'
 
 
 with models.DAG(
@@ -38,8 +37,8 @@ with models.DAG(
 
     load_mapper = BashOperator(
         task_id='load_mapper',
-        bash_command='!bq --location=US load --autodetect --null_marker="No ZCTA" --skip_leading_rows=1 --allow_quoted_newlines \
---source_format=CSV ' + staging_name + ' "gs://uds-mapper/zip_to_zcta_2019.csv"',
+        bash_command='bq --location=US load --autodetect --null_marker="No ZCTA" --skip_leading_rows=1 \
+            --allow_quoted_newlines --source_format=CSV ' + staging_name + ' "gs://uds-mapper/zip_to_zcta_2019.csv"',
         trigger_rule='one_success')
 
     create_mapper = BashOperator(
