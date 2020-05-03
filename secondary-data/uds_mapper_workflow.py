@@ -48,6 +48,6 @@ with models.DAG(
     
     mapper = BashOperator(
         task_id='mapper',
-        bash_command='python /home/jupyter/airflow/dags/zip_to_zcta5_beam_dataflow.py')
+        bash_command='python /home/jupyter/airflow/dags/zip_to_zcta5_beam_dataflow_airflow.py')
 
 create_staging >> create_modeled >> load_mapper >> create_mapper >> mapper
